@@ -22,24 +22,22 @@ set -o pipefail
 
 [[ "$EUID" == 0 ]] || exec sudo -s "$0" "$@"
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-if [ -f "$SCRIPT_DIR/.env" ]; then source "$SCRIPT_DIR/.env"
-
-REGISTRATION_TOKEN="PASTE_YOUR_TOKEN_HERE"
-RUNNER_DESCRIPTION="sh-runner"
-RUNNER_TAGS="shell,auto"
-EXECUTOR="shell"
-
 curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | bash
 apt install gitlab-runner -y
 
-#gitlab-runner register --non-interactive \
-#  --url "$GITLAB_URL" \
-#  --registration-token "$REGISTRATION_TOKEN" \
-#  --description "$RUNNER_DESCRIPTION" \
-#  --tag-list "$RUNNER_TAGS" \
-#  --executor "$EXECUTOR"
+# To create an instance runner:
+#     On the left sidebar, at the bottom, select Admin
+#     Select CI/CD > Runners
+#     Select Register an instance runner
+#     Copy the registration token
 #
-#systemctl enable gitlab-runner
-#systemctl restart gitlab-runner
-
+# Register the runner with command:
+#     sudo gitlab-runner register --non-interactive \
+#       --url "http://gitlab.example.com" \
+#       --token "copied registration token" \
+#       --executor "shell"
+#
+# or use ineractive registration with command:
+#     sudo gitlab-runner register
+#
+# https://docs.gitlab.com/runner/commands/#interactive-registration
