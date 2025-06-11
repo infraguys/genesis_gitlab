@@ -25,19 +25,30 @@ set -o pipefail
 curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | bash
 apt install gitlab-runner -y
 
-# To create an instance runner:
-#     On the left sidebar, at the bottom, select Admin
-#     Select CI/CD > Runners
-#     Select Register an instance runner
-#     Copy the registration token
-#
-# Register the runner with command:
-#     sudo gitlab-runner register --non-interactive \
-#       --url "http://gitlab.example.com" \
-#       --token "copied registration token" \
-#       --executor "shell"
-#
-# or use ineractive registration with command:
-#     sudo gitlab-runner register
-#
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+
+# Steps to create an instance runner:
+# 1. In the left sidebar (bottom), go to Admin
+# 2. Navigate to CI/CD > Runners
+# 3. Click Register an instance runner
+# 4. Add tags to specify which jobs the runner can execute
+# 5. Copy the registration token
+
+# To register a DOCKER runner (non-interactive):
+# sudo gitlab-runner register --non-interactive \
+#   --url "http://gitlab.example.com" \
+#   --token "your-copied-registration-token" \
+#   --executor "docker" \
+#   --docker-image ubuntu:24.04
+
+# To register a SHELL runner (non-interactive):
+# sudo gitlab-runner register --non-interactive \
+#   --url "http://gitlab.example.com" \
+#   --token "your-copied-registration-token" \
+#   --executor "shell"
+
+# Alternatively, for interactive registration, use:
+# sudo gitlab-runner register
+
 # https://docs.gitlab.com/runner/commands/#interactive-registration
